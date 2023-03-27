@@ -1,42 +1,47 @@
 //querySelectors
 var beginButton = document.querySelector(".begin-button");
 var timerEl = document.querySelector(".timer");
+//createElement
+var answerslistEl = document.createElement("ol")
+var answerOne = document.createElement("li");
+var answerTwo = document.createElement("li");
+var answerThree = document.createElement("li");
 // variables
 var secondCount;
 var timeLoss;
 var quizEnded = false;
 var finalScore = 0;
+var isRight = false;
 
 
 //array for questions/answers
 var quizQuestions = [{
-    question: "question",
-    answer : ["answer","answer","answer"],
+    question: "question1",
+    answer : ["answer1","answer2","answer3"],
     rightAnswer: 1
 }, 
 {
-    question: "question",
-    answer : ["answer","answer","answer"],
+    question: "question2",
+    answer : ["answer1","answer2","answer3"],
     rightAnswer: 1
 },
 
  {
-    question: "question",
-    answer : ["answer","answer","answer"],
+    question: "question3",
+    answer : ["answer1","answer2","answer3"],
     rightAnswer: 1},
  {
-    question: "question",
-    answer : ["answer","answer","answer"],
+    question: "question4",
+    answer : ["answer1","answer2","answer3"],
     rightAnswer: 1},
 ];
 
 
 function startQuiz(){
     quizEnded = false;
-    secondCount = 10;
+    secondCount = 60;
     beginButton.disable = true;
     renderQuestions();
-    renderAnswers();
     setTimer();
 
 }
@@ -50,6 +55,7 @@ function setTimer(){
         secondCount--;
         timerEl.textContent = secondCount;
         if(secondCount >= 0){
+
             if(quizEnded && secondCount > 0){
                 setScore();
                 clearInterval(timer);
@@ -79,17 +85,30 @@ function getScore(){
 
 function quizEnd(){
 
+beginButton.disabled = false;
+setScore();
 }
 
 function renderQuestions(){
+    
 
 }
 
-function checkAnswer(answer){
+function checkRight(answer){
+
+    if(rightAnswer === answer){
+        isRight = true;
+    }
 
 
 }
 
+function checkWrong(answer){
+    if(rightAnswer !== answer){
+        isRight = false;
+        secondCount -= 10;
+    }
+}
 beginButton.addEventListener("click", startQuiz);
 init();
 
@@ -97,7 +116,8 @@ init();
 var backButton = document.querySelector(".back-button");
 
 function resetQuiz(){
-
+    finalScore = 0;
+    setScore();
 }
 
 backButton.addEventListener("click", resetQuiz);
