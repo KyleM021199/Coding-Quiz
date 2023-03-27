@@ -8,9 +8,28 @@ var quizEnded = false;
 var finalScore = 0;
 
 
-//array for questions and answers
-var questions = [];
-var answers = [];
+//array for questions/answers
+var quizQuestions = [{
+    question: "question",
+    answer : ["answer","answer","answer"],
+    rightAnswer: 1
+}, 
+{
+    question: "question",
+    answer : ["answer","answer","answer"],
+    rightAnswer: 1
+},
+
+ {
+    question: "question",
+    answer : ["answer","answer","answer"],
+    rightAnswer: 1},
+ {
+    question: "question",
+    answer : ["answer","answer","answer"],
+    rightAnswer: 1},
+];
+
 
 function startQuiz(){
     quizEnded = false;
@@ -62,10 +81,12 @@ function quizEnd(){
 
 }
 
-function renderAnswers(){
+function renderQuestions(){
 
 }
-function renderQuestions(){
+
+function checkAnswer(answer){
+
 
 }
 
