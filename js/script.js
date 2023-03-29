@@ -7,7 +7,7 @@ var answersLi = document.querySelector(".answer-list");
 
 // variables
 var secondCount;
-var timeLoss;
+var timeLoss = secondCount -= 10;
 var quizEnded = false;
 var finalScore = 0;
 var timer;
@@ -36,9 +36,9 @@ var quizQuestions = [{
 function init(){
     getScore();
 }
-function checkRight(answer){
+/* function checkRight(index){
 
-    if(rightAnswer === answer){
+    if(quizQuestions[index].rightAnswer === answer){
         isRight = true;
     }
 
@@ -48,15 +48,15 @@ function checkRight(answer){
 function checkWrong(answer){
     if(rightAnswer !== answer){
         isRight = false;
-        secondCount -= 10;
+        timeLoss;
     }
-}
+} */
 //starts the quiz
 function startQuiz(){
     quizEnded = false;
-    secondCount = 60;
-    beginButton.disable = true;
-    renderQuestions();
+    secondCount = 10;
+    beginButton.disabled = true;
+    renderQuestions(0);
     setTimer();
 
 }
@@ -69,7 +69,7 @@ function setTimer(){
         timerEl.textContent = secondCount;
         if(secondCount >= 0){
 
-            if(quizEnded && secondCount > 0){
+            if(quizEnded && secondCount >= 0){
                 setScore();
                 clearInterval(timer);
                 quizEnd();
@@ -87,6 +87,7 @@ function setTimer(){
 function setScore(){
     score.textContent = finalScore;
     localStorage.setItem("endScore", finalScore);
+    
 
 }
 function getScore(){
@@ -96,7 +97,8 @@ function getScore(){
     } else {
         finalScore = storedScore;
     }
-   score.textContent = finalScore;
+   timerEl.textContent = finalScore;
+
 }
 
 
@@ -108,19 +110,34 @@ beginButton.disabled = false;
 setScore();
 }
 
-function renderQuestions(){
-  questionDiv.textContent = quizQuestions[0].question;
-  for(var i=0; i < quizQuestions[0].answer.length; i++){
-  answersLi.children[i].textContent = quizQuestions[0].answer[i];
-
+function renderQuestions(index){
+  questionDiv.textContent = quizQuestions[index].question;
+  for(var i=0; i < quizQuestions[index].answer.length; i++){
+  answersLi.children[i].textContent = quizQuestions[index].answer[i];
+    }
 }
-  
+function nextQuestion(){
+   
 }
 
 
 
 beginButton.addEventListener("click", startQuiz);
 init();
+// lets the answers have click elements
+document.querySelectorAll('ul.answer-list li').forEach((item) => {
+    item.addEventListener('click', (event) => {
+      nextQuestion();  
+    })
+});
+    /* var answerList = document.getElementsByClassName("answer-list").getElementsByTagName('li');
+    console.log(answerList);
+    for(var i = 0; i < answerList.length; i++){
+        answerList[i].addEventListener('click', nextQuestion(), false);
+    } */
+
+
+
 
 //reset the quiz via back button 
 var backButton = document.querySelector(".back-button");
