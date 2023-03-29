@@ -1,16 +1,16 @@
 //querySelectors
 var beginButton = document.querySelector(".begin-button");
 var timerEl = document.querySelector(".timer");
-//createElement
-var answerslistEl = document.createElement("ol")
-var answerOne = document.createElement("li");
-var answerTwo = document.createElement("li");
-var answerThree = document.createElement("li");
+var score = document.querySelector(".score");
+var questionDiv = document.querySelector(".question-prompt");
+var answersLi = document.querySelector(".answer-list");
+
 // variables
 var secondCount;
 var timeLoss;
 var quizEnded = false;
 var finalScore = 0;
+var timer;
 var isRight = false;
 
 
@@ -18,82 +18,24 @@ var isRight = false;
 var quizQuestions = [{
     question: "question1",
     answer : ["answer1","answer2","answer3"],
-    rightAnswer: 1
-}, 
+    rightAnswer: "answer1"}, 
 {
     question: "question2",
     answer : ["answer1","answer2","answer3"],
-    rightAnswer: 1
-},
+    rightAnswer: "answer2"},
 
  {
     question: "question3",
     answer : ["answer1","answer2","answer3"],
-    rightAnswer: 1},
+    rightAnswer: "answer2"},
  {
     question: "question4",
     answer : ["answer1","answer2","answer3"],
-    rightAnswer: 1},
+    rightAnswer: "answer3"},
 ];
-
-
-function startQuiz(){
-    quizEnded = false;
-    secondCount = 60;
-    beginButton.disable = true;
-    renderQuestions();
-    setTimer();
-
-}
 function init(){
     getScore();
 }
-//sets the timer    
-function setTimer(){
-
-    var timer = setInterval(function(){
-        secondCount--;
-        timerEl.textContent = secondCount;
-        if(secondCount >= 0){
-
-            if(quizEnded && secondCount > 0){
-                setScore();
-                clearInterval(timer);
-                quizEnd();
-            }
-        }
-
-
-
-    }, 1000);
-}
-function setScore(){
-    timerEl.textContent = finalScore;
-    localStorage.setItem("endScore", finalScore);
-
-}
-function getScore(){
-    var storedScore = localStorage.getItem("endScore");
-    if (storedScore === null){
-        finalScore = 0;
-    } else {
-        finalScore = storedScore;
-    }
-   timerEl.textContent = finalScore;
-}
-
-
-function quizEnd(){
-
-beginButton.disabled = false;
-setScore();
-}
-
-function renderQuestions(){
-    
-
-}
-
 function checkRight(answer){
 
     if(rightAnswer === answer){
@@ -109,6 +51,74 @@ function checkWrong(answer){
         secondCount -= 10;
     }
 }
+//starts the quiz
+function startQuiz(){
+    quizEnded = false;
+    secondCount = 60;
+    beginButton.disable = true;
+    renderQuestions();
+    setTimer();
+
+}
+
+//sets the timer    
+function setTimer(){
+
+     timer = setInterval(function(){
+        secondCount--;
+        timerEl.textContent = secondCount;
+        if(secondCount >= 0){
+
+            if(quizEnded && secondCount > 0){
+                setScore();
+                clearInterval(timer);
+                quizEnd();
+            }
+            
+        }
+        if(secondCount === 0){
+            setScore();
+            clearInterval(timer);
+            quizEnd();
+        }
+
+    }, 1000);
+}
+function setScore(){
+    score.textContent = finalScore;
+    localStorage.setItem("endScore", finalScore);
+
+}
+function getScore(){
+    var storedScore = localStorage.getItem("endScore");
+    if (storedScore === null){
+        finalScore = 0;
+    } else {
+        finalScore = storedScore;
+    }
+   score.textContent = finalScore;
+}
+
+
+function quizEnd(){
+//user types in preferred name and saved to the local storage
+
+
+beginButton.disabled = false;
+setScore();
+}
+
+function renderQuestions(){
+  questionDiv.textContent = quizQuestions[0].question;
+  for(var i=0; i < quizQuestions[0].answer.length; i++){
+  answersLi.children[i].textContent = quizQuestions[0].answer[i];
+
+}
+  
+}
+
+
+
 beginButton.addEventListener("click", startQuiz);
 init();
 
