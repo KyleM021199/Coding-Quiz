@@ -7,6 +7,7 @@ var answersLi = document.querySelector(".answer-list");
 
 // variables
 var secondCount;
+var questionNum = 1;
 var timeLoss = secondCount -= 10;
 var quizEnded = false;
 var finalScore = 0;
@@ -36,16 +37,22 @@ var quizQuestions = [{
 function init(){
     getScore();
 }
-/* function checkRight(index){
-
-    if(quizQuestions[index].rightAnswer === answer){
-        isRight = true;
+function checkRight(string){
+    console.log(string);
+    console.log(quizQuestions[questionNum - 1].rightAnswer)
+    if(string === quizQuestions[questionNum - 1].rightAnswer){
+        console.log("is true");
+        return true;
+    } else {
+    console.log("is false");
+        timeLoss;
+        return false;
     }
 
 
 }
 
-function checkWrong(answer){
+/* function checkWrong(answer){
     if(rightAnswer !== answer){
         isRight = false;
         timeLoss;
@@ -85,8 +92,9 @@ function setTimer(){
     }, 1000);
 }
 function setScore(){
-    score.textContent = secondCount;
-    localStorage.setItem("endScore", secondCount);
+    finalScore = secondCount;
+    score.textContent = finalScore;
+    localStorage.setItem("endScore", finalScore);
     
 
 }
@@ -134,9 +142,12 @@ function nextQuestion(){
 
 beginButton.addEventListener("click", startQuiz);
 init();
+checkRight();
 // lets the answers have click elements
 document.querySelectorAll('ul.answer-list li').forEach((item) => {
     item.addEventListener('click', (event) => {
+        event.preventDefault();
+        checkRight(item.textContent);
       nextQuestion();  
     })
 });
@@ -153,8 +164,9 @@ document.querySelectorAll('ul.answer-list li').forEach((item) => {
 var backButton = document.querySelector(".back-button");
 
 function resetQuiz(){
-    finalScore = 0;
+    
     setScore();
+    finalScore = 0;
 }
 
 backButton.addEventListener("click", resetQuiz);
