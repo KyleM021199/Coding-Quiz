@@ -4,20 +4,22 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- <link rel="stylesheet" href="./assets/style.css"> -->
+    <link rel="stylesheet" href="./css/style.css">
     <title>Coding Assessment</title>
+  </head>
     <body>
       <!-- Start Screen -->
       <header>
+        <div id = "page-1">
         <h1>Coding Assessment</h1> 
         <h2><button class="begin-button">Begin</button></h2>
+        </div>
       </header>
     <main>
       <!-- Quiz Screen -->
       <section>
-        <div class ="timer">
-
-        </div>
+        <div id = "page-2">
+        <div class ="timer"></div>
 
         <div class="question-prompt"></div>
   <ul class = "answer-list">
@@ -25,15 +27,19 @@
     <li id ="answer-two" class="answers"></li>
     <li id ="answer-three"class="answers"></li>
   </ul>
+      </div>
       </section>  
    
    
       <!-- Results Screen -->  
       <section>
-    <div>Score:</div>
+        <div id = "page-3">
+    <div id="score-title">Score:</div>
     <div class ="score"></div>
-    <button class="back-button">Back</button>
-      </section>
+    <div id="user-name"></div>
+    <button class="back-button">Reset</button>
+    </div>  
+    </section>
 
 
 
@@ -42,5 +48,5 @@
     </main>
     <script src="./js/script.js"></script>   
     </body>
-  </head>
+  
 </html>
