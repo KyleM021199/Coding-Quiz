@@ -12,7 +12,7 @@ var quizEnded = false;
 var finalScore = 0;
 var timer;
 var isRight = false;
-
+var nextCounter = 0;
 
 //array for questions/answers
 var quizQuestions = [{
@@ -118,7 +118,12 @@ function renderQuestions(index){
 }
 function nextQuestion(){
    
+   nextCounter++;
+   renderQuestions(nextCounter);
 }
+
+
+
 
 
 
