@@ -54,7 +54,7 @@ function checkWrong(answer){
 //starts the quiz
 function startQuiz(){
     quizEnded = false;
-    secondCount = 10;
+    secondCount = 50;
     beginButton.disabled = true;
     renderQuestions(0);
     setTimer();
@@ -85,8 +85,8 @@ function setTimer(){
     }, 1000);
 }
 function setScore(){
-    score.textContent = finalScore;
-    localStorage.setItem("endScore", finalScore);
+    score.textContent = secondCount;
+    localStorage.setItem("endScore", secondCount);
     
 
 }
@@ -105,7 +105,7 @@ function getScore(){
 function quizEnd(){
 //user types in preferred name and saved to the local storage
 
-
+quizEnded = true;
 beginButton.disabled = false;
 setScore();
 }
@@ -117,9 +117,14 @@ function renderQuestions(index){
     }
 }
 function nextQuestion(){
+    nextCounter++;
+   if(nextCounter < 4){
+    renderQuestions(nextCounter);
+   } else{
+    quizEnd();
+   }
    
-   nextCounter++;
-   renderQuestions(nextCounter);
+   
 }
 
 
