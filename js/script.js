@@ -2,17 +2,18 @@
 var pageOne = document.querySelector("#page-1");
 var pageTwo = document.querySelector("#page-2");
 var pageThree = document.querySelector("#page-3");
+var pageFour = document.querySelector("#page-4");
 var beginButton = document.querySelector(".begin-button");
+var submitButton = document.querySelector("#submit-button")
 var timerEl = document.querySelector(".timer");
 var score = document.querySelector(".score");
 var questionDiv = document.querySelector(".question-prompt");
 var answersLi = document.querySelector(".answer-list");
-var userNameEl = document.querySelector("#user-name");
+var userNameEl = document.querySelector("#name");
 
 // variables
 var secondCount;
 var questionNum = 1;
-//var timeLoss = secondCount -= 10;
 var quizEnded = false;
 var finalScore = 0;
 var timer;
@@ -21,22 +22,22 @@ var correctAnswerCounter= 1;
 
 //array for questions/answers
 var quizQuestions = [{
-    question: "question1",
-    answer : ["answer1-1","answer2-1","answer3-1"],
-    rightAnswer: "answer1-1"}, 
+    question: "Inside which HTML element do we put the JavaScript?",
+    answer : ["<script>","<javascript>","<js>"],
+    rightAnswer: "<script>"}, 
 {
-    question: "question2",
-    answer : ["answer1-2","answer2-2","answer3-2"],
-    rightAnswer: "answer2-2"},
+    question: "Where is the correct place to insert a JavaScript?",
+    answer : ["The <meta> section","The <body> section","The <button> section"],
+    rightAnswer: "The <body> section"},
 
  {
-    question: "question3",
-    answer : ["answer1-3","answer2-3","answer3-3"],
-    rightAnswer: "answer2-3"},
+    question: "What is the correct syntax for referring to an external script called 'xxx.js'?",
+    answer : ["<script name = 'xxx.js'>","<script src ='xxx.js'>","<script href = 'xxx.js'>"],
+    rightAnswer: "<script src ='xxx.js'>"},
  {
-    question: "question4",
-    answer : ["answer1-4","answer2-4","answer3-4"],
-    rightAnswer: "answer3-4"},
+    question: "How do you create a function in JavaScript?",
+    answer : ["function:myFunction()","function = myFunction()","function myFunction()"],
+    rightAnswer: "function myFunction()"},
 ];
 function init(){
     getScore();
@@ -66,6 +67,7 @@ function startQuiz(){
     pageOne.style.display = "none";
     pageTwo.style.display = "block";
     pageThree.style.display = "none";
+    pageFour.style.display = "none";
     if(secondCount <=0){
         secondCount = 50;
     }
@@ -81,7 +83,7 @@ function setTimer(){
 
      timer = setInterval(function(){
         secondCount--;
-        timerEl.textContent = "Seconds left: "+ secondCount;
+        timerEl.textContent = "Time: "+ secondCount;
         if(secondCount >= 0){
 
             if(quizEnded && secondCount >= 0){
@@ -91,10 +93,6 @@ function setTimer(){
                 checkRight();
             }
             
-        }else if(secondCount === 1){
-            secondCount--;
-        timerEl.textContent = "Second left: "+ secondCount;
-
         }
         if(secondCount === 0){
             setScore();
@@ -105,6 +103,7 @@ function setTimer(){
 
     }, 1000);
 }
+//set the score in local storage
 function setScore(){
     //timerEl.textContent = finalScore;
     score.textContent = secondCount;
@@ -112,38 +111,46 @@ function setScore(){
     
 
 }
+
 function getScore(){
-    var storedScore = localStorage.getItem("endScore");
+    var storedScore = JSON.parse(localStorage.getItem("endScore"));
     if (storedScore === null){
         secondCount = 0;
     } else {
         secondCount = storedScore;
     }
    score.textContent = secondCount;
-   //timerEl.textContent = finalScore;
 }
 
+ function setHighscore(){
+// get userscore and name
+var nameUser =userNameEl.value();
+
+//Make a user object with user score and name
+var userInfo ={
+    userName: nameUser,
+    userScore: secondCount,
+
+};
+//stringify object
+var highscorer =JSON.stringify(userInfo);
+
+localStorage.setItem("endScore", highscorer);
+
+ }
 
 function quizEnd(){
     pageTwo.style.display = "none";
     pageThree.style.display = "block";
 //user types in preferred name and saved to the local storage
-/* userNameEl.addEventListener('keydown', function (event) {
-    // Access value of pressed key with key property
-    var key = event.key.toLowerCase();
-    var alphabetNumericCharacters = 'abcdefghijklmnopqrstuvwxyz0123456789 '.split(
-      ''
-    );
-    if (alphabetNumericCharacters.includes(key)) {
-        for (var i = 0; i < elements.length; i++) {
-          elements[i].textContent += event.key;
-        }
-      }
-    }); */
-
 quizEnded = true;
 beginButton.disabled = false;
+setHighscore();
 setScore();
+}
+
+function renderHighscore(){
+
 }
 
 function renderQuestions(index){
@@ -165,11 +172,10 @@ function nextQuestion(){
 
 
 
-
-
 pageOne.style.display = "block";
 pageTwo.style.display = "none";
 pageThree.style.display = "none";
+pageFour.style.display = "none";
 beginButton.addEventListener("click", startQuiz);
 init();
 // lets the answers have click elements
@@ -180,11 +186,6 @@ document.querySelectorAll('ul.answer-list li').forEach((item) => {
       nextQuestion();  
     })
 });
-    /* var answerList = document.getElementsByClassName("answer-list").getElementsByTagName('li');
-    console.log(answerList);
-    for(var i = 0; i < answerList.length; i++){
-        answerList[i].addEventListener('click', nextQuestion(), false);
-    } */
 
 
 
@@ -193,11 +194,10 @@ document.querySelectorAll('ul.answer-list li').forEach((item) => {
 var backButton = document.querySelector(".back-button");
 
 function resetQuiz(){
-    secondCount = 0;
-    // console.log(finalScore);
-    // console.log(secondCount);
+    secondCount = 50;
+    renderQuestions(0);
     setScore();
-   
+   startQuiz();
 }
 
 backButton.addEventListener("click", resetQuiz);
